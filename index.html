@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌟 MiniAkıl - Çocuklar İçin Öğrenme Dünyası</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #4FC3F7;
+    --sun: #FFD54F;
+    --grass: #81C784;
+    --rose: #F48FB1;
+    --purple: #CE93D8;
+    --orange: #FFB74D;
+    --mint: #80CBC4;
+    --bg: #FFF8E7;
+    --card-radius: 24px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 18px 20px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(102,126,234,0.4);
+  }
+  .logo {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo span { font-size: 1.9rem; }
+  .star-count {
+    background: var(--sun);
+    color: #7B5800;
+    font-weight: 900;
+    font-size: 1rem;
+    border-radius: 50px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 14px 16px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0;
+    padding: 10px 18px;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    background: #F0F0F0;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tab.active, .tab:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  }
+  .tab[data-tab="alfabe"].active, .tab[data-tab="alfabe"]:hover { background: #667eea; }
+  .tab[data-tab="sayilar"].active, .tab[data-tab="sayilar"]:hover { background: #f7931e; }
+  .tab[data-tab="renkler"].active, .tab[data-tab="renkler"]:hover { background: #e91e8c; }
+  .tab[data-tab="hayvanlar"].active, .tab[data-tab="hayvanlar"]:hover { background: #4caf50; }
+  .tab[data-tab="videolar"].active, .tab[data-tab="videolar"]:hover { background: #f44336; }
+  .tab[data-tab="fotograflar"].active, .tab[data-tab="fotograflar"]:hover { background: #9c27b0; }
+  .tab[data-tab="sinav"].active, .tab[data-tab="sinav"]:hover { background: #ff5722; }
+
+  /* ── SECTIONS ── */
+  .section { display: none; padding: 20px 16px 100px; animation: fadeIn 0.4s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:none;} }
+
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* ── ALPHABET CARDS ── */
+  .alphabet-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  @media(max-width:380px){ .alphabet-grid { grid-template-columns: repeat(3,1fr); } }
+
+  .letter-card {
+    border-radius: var(--card-radius);
+    padding: 18px 8px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    border: 3px solid transparent;
+  }
+  .letter-card:active { transform: scale(0.94); }
+  .letter-card:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 14px 40px rgba(0,0,0,0.15); }
+  .letter-card .big-letter {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  }
+  .letter-card .word { font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.9); }
+  .letter-card .emoji { font-size: 1.4rem; }
+  .letter-card .sound-btn {
+    position: absolute; top:6px; right:6px;
+    background: rgba(255,255,255,0.3);
+    border: none; border-radius: 50%; width:24px; height:24px;
+    font-size:0.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ── NUMBERS ── */
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .number-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    padding: 20px 12px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 3px solid #eee;
+  }
+  .number-card:hover { transform: scale(1.06); border-color: #667eea; }
+  .number-card .big-num {
+    font-family: 'Baloo 2', cursive;
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .number-card .dots { font-size: 1.2rem; letter-spacing: 2px; min-height: 28px; }
+  .number-card .num-name { font-weight: 800; color: #555; font-size: 0.85rem; margin-top: 4px; }
+
+  /* ── COLORS ── */
+  .colors-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .color-card {
+    border-radius: var(--card-radius);
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .color-card:hover { transform: scale(1.05); }
+  .color-circle {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    border: 4px solid rgba(255,255,255,0.6);
+    margin-bottom: 4px;
+  }
+  .color-name { font-size: 1.2rem; font-weight: 900; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.25); }
+  .color-emoji { font-size: 2rem; }
+
+  /* ── ANIMALS ── */
+  .animals-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .animal-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    padding: 20px 16px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    border: 3px solid #eee;
+    text-align: center;
+  }
+  .animal-card:hover { transform: translateY(-6px); border-color: #81C784; box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
+  .animal-emoji { font-size: 3.5rem; }
+  .animal-name { font-weight: 900; font-size: 1rem; color: #333; }
+  .animal-sound { font-size: 0.78rem; color: #888; font-weight: 600; background: #f5f5f5; border-radius: 20px; padding: 3px 10px; }
+  .animal-fact { font-size: 0.72rem; color: #aaa; font-style: italic; }
+
+  /* ── VIDEOS ── */
+  .videos-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .video-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .video-card:hover { transform: translateY(-4px); }
+  .video-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .play-btn {
+    position: absolute;
+    width: 60px; height: 60px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+  }
+  .video-card:hover .play-btn { transform: scale(1.15); }
+  .video-info { padding: 14px 16px; }
+  .video-title { font-weight: 800; font-size: 1rem; color: #333; }
+  .video-desc { font-size: 0.78rem; color: #888; margin-top: 4px; }
+  .video-tag { display:inline-block; margin-top:8px; background:#f0f0f0; border-radius:20px; padding:3px 10px; font-size:0.72rem; font-weight:700; color:#666; }
+
+  /* Video Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: #fff;
+    border-radius: var(--card-radius);
+    width: 100%;
+    max-width: 480px;
+    overflow: hidden;
+  }
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+  .modal-title { font-weight: 800; font-size: 1rem; }
+  .modal-close {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 50%;
+    width: 34px; height: 34px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-body { padding: 20px; }
+  .video-player {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 16px;
+    border: none;
+    background: #000;
+  }
+
+  /* ── PHOTOS ── */
+  .photos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .photo-card {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.2s;
+    position: relative;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+  }
+  .photo-card:hover { transform: scale(1.04); }
+  .photo-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    padding: 12px 10px 8px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  /* ── QUIZ ── */
+  .quiz-container { max-width: 480px; margin: 0 auto; }
+  .quiz-progress {
+    background: #e0e0e0;
+    border-radius: 20px;
+    height: 12px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .quiz-bar {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transition: width 0.5s ease;
+  }
+  .quiz-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #888;
+  }
+  .question-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    padding: 28px 22px 22px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .question-emoji { font-size: 4rem; margin-bottom: 10px; }
+  .question-text { font-weight: 800; font-size: 1.15rem; color: #333; line-height: 1.4; }
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .option-btn {
+    padding: 18px 12px;
+    border-radius: 18px;
+    border: 3px solid #e8e8e8;
+    background: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+  }
+  .option-btn:hover { border-color: #667eea; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(102,126,234,0.2); }
+  .option-btn.correct { background: #e8f5e9; border-color: #4caf50; color: #2e7d32; }
+  .option-btn.wrong { background: #ffebee; border-color: #f44336; color: #c62828; }
+  .option-btn:disabled { cursor: default; transform: none; }
+  .option-emoji { font-size: 1.8rem; }
+
+  .result-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    padding: 36px 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    display: none;
+  }
+  .result-card.show { display: block; animation: fadeIn 0.5s ease; }
+  .result-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-title { font-family:'Baloo 2',cursive; font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
+  .result-score { font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .result-msg { color: #888; font-size: 0.95rem; margin: 10px 0 20px; }
+  .restart-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 36px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+    transition: transform 0.2s;
+  }
+  .restart-btn:hover { transform: scale(1.05); }
+
+  /* Feedback toast */
+  .feedback {
+    position: fixed;
+    bottom: 100px; left: 50%; transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-weight: 800;
+    font-size: 1rem;
+    z-index: 300;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+  .feedback.show { opacity: 1; }
+
+  /* Bottom nav */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left:0; right:0;
+    background: #fff;
+    border-top: 2px solid #f0f0f0;
+    display: flex;
+    padding: 8px 0 12px;
+    z-index: 100;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  }
+  .bnav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+    padding: 4px 0;
+  }
+  .bnav-btn:hover { transform: translateY(-3px); }
+  .bnav-btn.active .bnav-icon { filter: drop-shadow(0 2px 6px rgba(102,126,234,0.4)); }
+  .bnav-icon { font-size: 1.6rem; }
+  .bnav-label { font-size: 0.62rem; font-weight: 800; color: #aaa; }
+  .bnav-btn.active .bnav-label { color: #667eea; }
+
+  /* Progress badge */
+  .progress-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.3);
+  }
+  .badge-left { display: flex; flex-direction:column; gap:2px; }
+  .badge-title { font-size: 0.78rem; opacity: 0.8; font-weight: 700; }
+  .badge-value { font-size: 1.6rem; font-weight: 900; }
+  .badge-emoji { font-size: 2.5rem; }
+
+  /* Sound ripple */
+  @keyframes ripple {
+    0% { transform: scale(1); opacity:0.6; }
+    100% { transform: scale(2.5); opacity:0; }
+  }
+  .ripple { animation: ripple 0.5s ease-out; }
+
+  /* Category badge */
+  .cat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    color:#fff;
+    border-radius:50px;
+    padding:6px 16px;
+    font-size:0.82rem;
+    font-weight:800;
+    margin-bottom:18px;
+  }
+
+  /* Tip box */
+  .tip-box {
+    background: #fff9e6;
+    border-left: 5px solid var(--sun);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #7b5800;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .tip-box .tip-icon { font-size: 1.4rem; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo"><span>🌟</span> MiniAkıl</div>
+  <div class="star-count" id="starCount">⭐ 0</div>
+</header>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <button class="tab active" data-tab="alfabe" onclick="switchTab('alfabe')">🔤 Alfabe</button>
+  <button class="tab" data-tab="sayilar" onclick="switchTab('sayilar')">🔢 Sayılar</button>
+  <button class="tab" data-tab="renkler" onclick="switchTab('renkler')">🎨 Renkler</button>
+  <button class="tab" data-tab="hayvanlar" onclick="switchTab('hayvanlar')">🐾 Hayvanlar</button>
+  <button class="tab" data-tab="videolar" onclick="switchTab('videolar')">▶️ Videolar</button>
+  <button class="tab" data-tab="fotograflar" onclick="switchTab('fotograflar')">🖼️ Fotoğraflar</button>
+  <button class="tab" data-tab="sinav" onclick="switchTab('sinav')">📝 Sınav</button>
+</div>
+
+<!-- ══════════ ALFABE ══════════ -->
+<section class="section active" id="alfabe">
+  <div class="section-title" style="color:#667eea">🔤 Türk Alfabesi</div>
+  <div class="tip-box"><span class="tip-icon">💡</span> Kartlara dokun ve harfi öğren! Her harf için bir kelime var.</div>
+  <div class="alphabet-grid" id="alphabetGrid"></div>
+</section>
+
+<!-- ══════════ SAYILAR ══════════ -->
+<section class="section" id="sayilar">
+  <div class="section-title" style="color:#f7931e">🔢 Sayıları Öğrenelim</div>
+  <div class="tip-box"><span class="tip-icon">💡</span> Sayıya dokun ve noktaları say!</div>
+  <div class="numbers-grid" id="numbersGrid"></div>
+</section>
+
+<!-- ══════════ RENKLER ══════════ -->
+<section class="section" id="renkler">
+  <div class="section-title" style="color:#e91e8c">🎨 Renkler Dünyası</div>
+  <div class="tip-box"><span class="tip-icon">💡</span> Her rengi tanı ve ismini öğren!</div>
+  <div class="colors-grid" id="colorsGrid"></div>
+</section>
+
+<!-- ══════════ HAYVANLAR ══════════ -->
+<section class="section" id="hayvanlar">
+  <div class="section-title" style="color:#4caf50">🐾 Hayvanlar Alemi</div>
+  <div class="tip-box"><span class="tip-icon">💡</span> Hayvana dokun ve sesini duy!</div>
+  <div class="animals-grid" id="animalsGrid"></div>
+</section>
+
+<!-- ══════════ VİDEOLAR ══════════ -->
+<section class="section" id="videolar">
+  <div class="section-title" style="color:#f44336">▶️ Eğitici Videolar</div>
+  <div class="tip-box"><span class="tip-icon">💡</span> Videoyu izle ve öğren!</div>
+  <div class="videos-grid" id="videosGrid"></div>
+</section>
+
+<!-- ══════════ FOTOĞRAFLAR ══════════ -->
+<section class="section" id="fotograflar">
+  <div class="section-title" style="color:#9c27b0">🖼️ Öğretici Fotoğraflar</div>
+  <div class="tip-box"><span class="tip-icon">💡</span> Resimlere bak ve isimlerini öğren!</div>
+  <div class="photos-grid" id="photosGrid"></div>
+</section>
+
+<!-- ══════════ SINAV ══════════ -->
+<section class="section" id="sinav">
+  <div class="section-title" style="color:#ff5722">📝 Bilgi Sınavı</div>
+  <div class="quiz-container">
+    <div id="quizArea">
+      <div class="quiz-meta">
+        <span id="qCounter">Soru 1 / 10</span>
+        <span id="qScore">Doğru: 0</span>
+      </div>
+      <div class="quiz-progress"><div class="quiz-bar" id="quizBar" style="width:10%"></div></div>
+      <div class="question-card">
+        <div class="question-emoji" id="qEmoji">🐘</div>
+        <div class="question-text" id="qText">Bu hangi hayvan?</div>
+      </div>
+      <div class="options-grid" id="optionsGrid"></div>
+    </div>
+    <div class="result-card" id="resultCard">
+      <div class="result-emoji" id="resultEmoji">🏆</div>
+      <div class="result-title">Harika!</div>
+      <div class="result-score" id="resultScore">10/10</div>
+      <div class="result-msg" id="resultMsg">Tüm soruları doğru cevapladın!</div>
+      <button class="restart-btn" onclick="restartQuiz()">🔄 Tekrar Oyna</button>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO MODAL -->
+<div class="modal-overlay" id="videoModal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Video</span>
+      <button class="modal-close" onclick="closeVideoModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <iframe class="video-player" id="videoFrame" src="" allowfullscreen></iframe>
+      <div id="modalDesc" style="margin-top:12px;font-size:0.85rem;color:#666;font-weight:600;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK TOAST -->
+<div class="feedback" id="feedbackToast"></div>
+
+<script>
+/* ═══════════════════════════════════════
+   DATA
+═══════════════════════════════════════ */
+const ALPHABET = [
+  {l:'A',w:'Arı',e:'🐝',c:'#FF6B6B'},{l:'B',w:'Balık',e:'🐟',c:'#4ECDC4'},
+  {l:'C',w:'Ceylan',e:'🦌',c:'#45B7D1'},{l:'Ç',w:'Çiçek',e:'🌸',c:'#F7DC6F'},
+  {l:'D',w:'Deniz',e:'🌊',c:'#2980B9'},{l:'E',w:'Elma',e:'🍎',c:'#E74C3C'},
+  {l:'F',w:'Fare',e:'🐭',c:'#8E44AD'},{l:'G',w:'Gül',e:'🌹',c:'#E91E63'},
+  {l:'Ğ',w:'Ğilaboru',e:'🫐',c:'#6C3483'},{l:'H',w:'Horoz',e:'🐓',c:'#D35400'},
+  {l:'I',w:'Işık',e:'💡',c:'#F39C12'},{l:'İ',w:'İnek',e:'🐄',c:'#27AE60'},
+  {l:'J',w:'Jips',e:'🚙',c:'#2ECC71'},{l:'K',w:'Kedi',e:'🐱',c:'#E67E22'},
+  {l:'L',w:'Lale',e:'🌷',c:'#C0392B'},{l:'M',w:'Muz',e:'🍌',c:'#F1C40F'},
+  {l:'N',w:'Nar',e:'🍑',c:'#E74C3C'},{l:'O',w:'Otobüs',e:'🚌',c:'#F39C12'},
+  {l:'Ö',w:'Öküz',e:'🐂',c:'#795548'},{l:'P',w:'Panda',e:'🐼',c:'#607D8B'},
+  {l:'R',w:'Rüzgar',e:'🌬️',c:'#00BCD4'},{l:'S',w:'Sincap',e:'🐿️',c:'#8D6E63'},
+  {l:'Ş',w:'Şeker',e:'🍬',c:'#FF69B4'},{l:'T',w:'Tren',e:'🚂',c:'#E53935'},
+  {l:'U',w:'Uçak',e:'✈️',c:'#1565C0'},{l:'Ü',w:'Üzüm',e:'🍇',c:'#7B1FA2'},
+  {l:'V',w:'Vagon',e:'🚃',c:'#2E7D32'},{l:'Y',w:'Yıldız',e:'⭐',c:'#F57F17'},
+  {l:'Z',w:'Zürafa',e:'🦒',c:'#FF8F00'}
+];
+
+const NUMBERS = [
+  {n:0,name:'Sıfır',dots:''},{n:1,name:'Bir',dots:'⚫'},
+  {n:2,name:'İki',dots:'⚫⚫'},{n:3,name:'Üç',dots:'⚫⚫⚫'},
+  {n:4,name:'Dört',dots:'⚫⚫⚫⚫'},{n:5,name:'Beş',dots:'⚫⚫⚫⚫⚫'},
+  {n:6,name:'Altı',dots:'⚫⚫⚫⚫⚫⚫'},{n:7,name:'Yedi',dots:'⚫⚫⚫⚫⚫⚫⚫'},
+  {n:8,name:'Sekiz',dots:'⚫⚫⚫⚫⚫⚫⚫⚫'},{n:9,name:'Dokuz',dots:'⚫⚫⚫⚫⚫⚫⚫⚫⚫'},
+  {n:10,name:'On',dots:'🔟'}
+];
+
+const COLORS = [
+  {name:'Kırmızı',hex:'#f44336',bg:'linear-gradient(135deg,#f44336,#c62828)',e:'🍎'},
+  {name:'Mavi',hex:'#2196f3',bg:'linear-gradient(135deg,#2196f3,#0d47a1)',e:'🫐'},
+  {name:'Sarı',hex:'#ffeb3b',bg:'linear-gradient(135deg,#ffeb3b,#f57f17)',e:'🌟'},
+  {name:'Yeşil',hex:'#4caf50',bg:'linear-gradient(135deg,#4caf50,#1b5e20)',e:'🌿'},
+  {name:'Turuncu',hex:'#ff9800',bg:'linear-gradient(135deg,#ff9800,#e65100)',e:'🍊'},
+  {name:'Mor',hex:'#9c27b0',bg:'linear-gradient(135deg,#9c27b0,#4a148c)',e:'🍇'},
+  {name:'Pembe',hex:'#e91e63',bg:'linear-gradient(135deg,#e91e63,#880e4f)',e:'🌸'},
+  {name:'Kahve',hex:'#795548',bg:'linear-gradient(135deg,#795548,#3e2723)',e:'🍫'},
+];
+
+const ANIMALS = [
+  {name:'Aslan',e:'🦁',sound:'Kükredi!',fact:'Ormanın Kralı'},
+  {name:'Fil',e:'🐘',sound:'Böğürdü!',fact:'En büyük kara hayvanı'},
+  {name:'Zürafa',e:'🦒',sound:'Sessiz...',fact:'En uzun boyunlu hayvan'},
+  {name:'Kaplan',e:'🐯',sound:'Hırladı!',fact:'Hızlı ve güçlü'},
+  {name:'Maymun',e:'🐒',sound:'Çığlık attı!',fact:'Çok akıllı hayvan'},
+  {name:'Penguen',e:'🐧',sound:'Kakırdadı!',fact:'Uçamaz ama yüzer'},
+  {name:'Yunus',e:'🐬',sound:'Islık çaldı!',fact:'Çok zeki balık'},
+  {name:'Kelebek',e:'🦋',sound:'Sessizce...',fact:'Renkli ve zarif'},
+  {name:'Tilki',e:'🦊',sound:'Havladı!',fact:'Çok kurnaz hayvan'},
+  {name:'Tavşan',e:'🐰',sound:'Sessizce...',fact:'Çok hızlı koşar'},
+  {name:'Baykuş',e:'🦉',sound:'Ötüyor!',fact:'Gecenin hayvanı'},
+  {name:'Timsah',e:'🐊',sound:'Tıklattı!',fact:'Su ve karada yaşar'},
+];
+
+const VIDEOS = [
+  {title:'Türk Alfabesi Şarkısı',desc:'A\'dan Z\'ye tüm harfleri şarkıyla öğren!',thumb:'🎵',bg:'linear-gradient(135deg,#667eea,#764ba2)',tag:'Alfabe',ytId:'dQw4w9WgXcQ'},
+  {title:'1\'den 10\'a Sayıyoruz',desc:'Renkli animasyonlarla sayıları öğren!',thumb:'🔢',bg:'linear-gradient(135deg,#f7931e,#f54ea2)',tag:'Sayılar',ytId:'dQw4w9WgXcQ'},
+  {title:'Hayvanlar ve Sesleri',desc:'Çiftlik hayvanları ve orman hayvanlarını tanı!',thumb:'🐾',bg:'linear-gradient(135deg,#4caf50,#8bc34a)',tag:'Hayvanlar',ytId:'dQw4w9WgXcQ'},
+  {title:'Renkler Öğreniyoruz',desc:'Gökkuşağının tüm renklerini keşfet!',thumb:'🌈',bg:'linear-gradient(135deg,#ff6b6b,#ffd93d)',tag:'Renkler',ytId:'dQw4w9WgXcQ'},
+  {title:'Şekiller Dünyası',desc:'Kare, daire, üçgen ve daha fazlası!',thumb:'🔷',bg:'linear-gradient(135deg,#00bcd4,#009688)',tag:'Şekiller',ytId:'dQw4w9WgXcQ'},
+  {title:'Mevsimler ve Hava',desc:'4 mevsimi birlikte öğrenelim!',thumb:'🌤️',bg:'linear-gradient(135deg,#ffb347,#ff7043)',tag:'Bilim',ytId:'dQw4w9WgXcQ'},
+];
+
+const PHOTOS = [
+  {label:'Güneş Sistemi',e:'🌍',bg:'linear-gradient(135deg,#0d47a1,#1565c0)'},
+  {label:'Çiçekler',e:'🌺',bg:'linear-gradient(135deg,#e91e63,#f48fb1)'},
+  {label:'Araçlar',e:'🚂',bg:'linear-gradient(135deg,#e53935,#ef9a9a)'},
+  {label:'Meyveler',e:'🍎',bg:'linear-gradient(135deg,#43a047,#a5d6a7)'},
+  {label:'Deniz Canlıları',e:'🐠',bg:'linear-gradient(135deg,#0288d1,#80deea)'},
+  {label:'Uzay',e:'🚀',bg:'linear-gradient(135deg,#1a237e,#7986cb)'},
+  {label:'Böcekler',e:'🦋',bg:'linear-gradient(135deg,#f57f17,#fff176)'},
+  {label:'Kuşlar',e:'🦜',bg:'linear-gradient(135deg,#2e7d32,#a5d6a7)'},
+];
+
+const QUIZ_QUESTIONS = [
+  {text:'Bu hangi hayvan?',emoji:'🐘',options:[{e:'🐘',t:'Fil'},{e:'🦁',t:'Aslan'},{e:'🐯',t:'Kaplan'},{e:'🦒',t:'Zürafa'}],correct:0},
+  {text:'Bu hangi meyve?',emoji:'🍎',options:[{e:'🍌',t:'Muz'},{e:'🍎',t:'Elma'},{e:'🍇',t:'Üzüm'},{e:'🍊',t:'Portakal'}],correct:1},
+  {text:'Gökyüzü hangi renk?',emoji:'🌤️',options:[{e:'🔴',t:'Kırmızı'},{e:'🟡',t:'Sarı'},{e:'🔵',t:'Mavi'},{e:'🟢',t:'Yeşil'}],correct:2},
+  {text:'"A" harfi hangi kelimeyle başlar?',emoji:'🔤',options:[{e:'🐝',t:'Arı'},{e:'🐟',t:'Balık'},{e:'🐱',t:'Kedi'},{e:'🌹',t:'Gül'}],correct:0},
+  {text:'Kaç tane elma var? 🍎🍎🍎',emoji:'🤔',options:[{e:'1️⃣',t:'1'},{e:'2️⃣',t:'2'},{e:'3️⃣',t:'3'},{e:'4️⃣',t:'4'}],correct:2},
+  {text:'Hangisi uçar?',emoji:'✈️',options:[{e:'🐟',t:'Balık'},{e:'✈️',t:'Uçak'},{e:'🚗',t:'Araba'},{e:'🐢',t:'Kaplumbağa'}],correct:1},
+  {text:'Güneş hangi renk?',emoji:'☀️',options:[{e:'🔵',t:'Mavi'},{e:'🟢',t:'Yeşil'},{e:'🟡',t:'Sarı'},{e:'🔴',t:'Kırmızı'}],correct:2},
+  {text:'Hangisi meyve değil?',emoji:'🥕',options:[{e:'🍎',t:'Elma'},{e:'🍌',t:'Muz'},{e:'🥕',t:'Havuç'},{e:'🍇',t:'Üzüm'}],correct:2},
+  {text:'"K" harfi ile başlayan?',emoji:'🔤',options:[{e:'🌷',t:'Lale'},{e:'🍎',t:'Elma'},{e:'🐱',t:'Kedi'},{e:'🌹',t:'Gül'}],correct:2},
+  {text:'5 + 5 kaçtır?',emoji:'🧮',options:[{e:'8️⃣',t:'8'},{e:'9️⃣',t:'9'},{e:'🔟',t:'10'},{e:'7️⃣',t:'7'}],correct:2},
+];
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+let stars = 0;
+let qIndex = 0, qCorrect = 0, quizActive = true;
+
+/* ═══════════════════════════════════════
+   INIT RENDERS
+═══════════════════════════════════════ */
+function initAlphabet() {
+  const g = document.getElementById('alphabetGrid');
+  g.innerHTML = ALPHABET.map(a => `
+    <div class="letter-card" style="background:${a.c}" onclick="playLetter('${a.l}','${a.w}')">
+      <button class="sound-btn">🔊</button>
+      <div class="big-letter">${a.l}</div>
+      <div class="emoji">${a.e}</div>
+      <div class="word">${a.w}</div>
+    </div>`).join('');
+}
+
+function initNumbers() {
+  const g = document.getElementById('numbersGrid');
+  g.innerHTML = NUMBERS.map(n => `
+    <div class="number-card" onclick="showToast('${n.n} = ${n.name}! 🎉')">
+      <div class="big-num">${n.n}</div>
+      <div class="dots">${n.dots}</div>
+      <div class="num-name">${n.name}</div>
+    </div>`).join('');
+}
+
+function initColors() {
+  const g = document.getElementById('colorsGrid');
+  g.innerHTML = COLORS.map(c => `
+    <div class="color-card" style="background:${c.bg}" onclick="showToast('${c.name}! ${c.e}')">
+      <div class="color-circle" style="background:${c.hex}"></div>
+      <div class="color-emoji">${c.e}</div>
+      <div class="color-name">${c.name}</div>
+    </div>`).join('');
+}
+
+function initAnimals() {
+  const g = document.getElementById('animalsGrid');
+  g.innerHTML = ANIMALS.map(a => `
+    <div class="animal-card" onclick="animalClick(this,'${a.name}','${a.sound}')">
+      <div class="animal-emoji">${a.e}</div>
+      <div class="animal-name">${a.name}</div>
+      <div class="animal-sound">${a.sound}</div>
+      <div class="animal-fact">📌 ${a.fact}</div>
+    </div>`).join('');
+}
+
+function initVideos() {
+  const g = document.getElementById('videosGrid');
+  g.innerHTML = VIDEOS.map(v => `
+    <div class="video-card" onclick="openVideo('${v.ytId}','${v.title}','${v.desc}')">
+      <div class="video-thumb" style="background:${v.bg}">
+        ${v.thumb}
+        <div class="play-btn">▶</div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">${v.title}</div>
+        <div class="video-desc">${v.desc}</div>
+        <span class="video-tag">🏷️ ${v.tag}</span>
+      </div>
+    </div>`).join('');
+}
+
+function initPhotos() {
+  const g = document.getElementById('photosGrid');
+  g.innerHTML = PHOTOS.map(p => `
+    <div class="photo-card" style="background:${p.bg}" onclick="showToast('${p.label}! 📸')">
+      ${p.e}
+      <div class="photo-label">${p.label}</div>
+    </div>`).join('');
+}
+
+function initQuiz() {
+  qIndex = 0; qCorrect = 0; quizActive = true;
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('quizArea').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = QUIZ_QUESTIONS[qIndex];
+  document.getElementById('qCounter').textContent = `Soru ${qIndex+1} / ${QUIZ_QUESTIONS.length}`;
+  document.getElementById('qScore').textContent = `Doğru: ${qCorrect}`;
+  document.getElementById('quizBar').style.width = `${((qIndex+1)/QUIZ_QUESTIONS.length)*100}%`;
+  document.getElementById('qEmoji').textContent = q.emoji;
+  document.getElementById('qText').textContent = q.text;
+  const og = document.getElementById('optionsGrid');
+  og.innerHTML = q.options.map((o,i) => `
+    <button class="option-btn" onclick="answerQ(${i})">
+      <span class="option-emoji">${o.e}</span>
+      <span>${o.t}</span>
+    </button>`).join('');
+}
+
+/* ═══════════════════════════════════════
+   INTERACTIONS
+═══════════════════════════════════════ */
+function switchTab(tab) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+}
+
+function playLetter(l, w) {
+  showToast(`${l} — ${w}! 🔤`);
+  addStar(1);
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(l + '. ' + w);
+    u.lang = 'tr-TR'; u.rate = 0.8;
+    speechSynthesis.speak(u);
+  }
+}
+
+function animalClick(el, name, sound) {
+  showToast(`${name} — ${sound}`);
+  addStar(1);
+  el.style.transform = 'scale(1.1) rotate(-3deg)';
+  setTimeout(()=>el.style.transform='',300);
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(name);
+    u.lang = 'tr-TR'; u.rate = 0.8;
+    speechSynthesis.speak(u);
+  }
+}
+
+function openVideo(id, title, desc) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalDesc').textContent = desc;
+  document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+  document.getElementById('videoModal').classList.add('open');
+  addStar(2);
+}
+
+function closeVideoModal() {
+  document.getElementById('videoFrame').src = '';
+  document.getElementById('videoModal').classList.remove('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('videoModal')) closeVideoModal();
+}
+
+function answerQ(idx) {
+  if (!quizActive) return;
+  const q = QUIZ_QUESTIONS[qIndex];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b=>b.disabled=true);
+  if (idx === q.correct) {
+    btns[idx].classList.add('correct');
+    qCorrect++;
+    addStar(5);
+    showToast('✅ Süper! Doğru cevap!');
+  } else {
+    btns[idx].classList.add('wrong');
+    btns[q.correct].classList.add('correct');
+    showToast('❌ Yanlış. Tekrar dene!');
+  }
+  setTimeout(()=>{
+    qIndex++;
+    if (qIndex < QUIZ_QUESTIONS.length) renderQuestion();
+    else showResult();
+  }, 1400);
+}
+
+function showResult() {
+  document.getElementById('quizArea').style.display = 'none';
+  const rc = document.getElementById('resultCard');
+  rc.classList.add('show');
+  const pct = (qCorrect/QUIZ_QUESTIONS.length)*100;
+  document.getElementById('resultScore').textContent = `${qCorrect}/${QUIZ_QUESTIONS.length}`;
+  let emoji='🏆', msg='Harika! Tüm soruları bildin!';
+  if(pct<50){emoji='😊';msg='Biraz daha çalışalım, başarabilirsin!';}
+  else if(pct<80){emoji='👏';msg='Çok iyisin! Biraz daha pratik yap!';}
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultMsg').textContent = msg;
+  addStar(qCorrect*3);
+}
+
+function restartQuiz() { initQuiz(); }
+
+function addStar(n) {
+  stars += n;
+  document.getElementById('starCount').textContent = `⭐ ${stars}`;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('feedbackToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._to);
+  t._to = setTimeout(()=>t.classList.remove('show'), 2000);
+}
+
+/* ═══════════════════════════════════════
+   BOOT
+═══════════════════════════════════════ */
+initAlphabet();
+initNumbers();
+initColors();
+initAnimals();
+initVideos();
+initPhotos();
+initQuiz();
+</script>
+</body>
+</html>
